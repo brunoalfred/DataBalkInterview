@@ -39,7 +39,7 @@ namespace DataBalkInterview.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            if (_userRepository.GetByIdAsync(id) == null)
+            if (_userRepository.IsUserContextNull())
             {
                 return NotFound();
             }

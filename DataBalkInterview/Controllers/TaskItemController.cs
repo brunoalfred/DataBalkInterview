@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DataBalkInterview.Models;
+using DataBalkInterview.Repositories;
 
 namespace DataBalkInterview.Controllers
 {
@@ -13,40 +14,35 @@ namespace DataBalkInterview.Controllers
     [ApiController]
     public class TaskItemController : ControllerBase
     {
-        private readonly TaskItemContext _context;
+        private readonly ITaskItemRepository _taskRepository;
 
-        public TaskItemController(TaskItemContext context)
+        public TaskItemController(ITaskItemRepository taskRepository)
         {
-            _context = context;
+            _taskRepository = taskRepository;
         }
 
         // GET: api/TaskItem
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTaskItems()
         {
-          if (_context.TaskItems == null)
-          {
-              return NotFound();
-          }
-            return await _context.TaskItems.ToListAsync();
+            if (_taskRepository.IsTaskItemContextNull())
+            {
+                return NotFound();
+            }
+
+            return await _taskRepository.GetAllAsync();
         }
 
         // GET: api/TaskItem/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskItem>> GetTaskItem(int id)
         {
-          if (_context.TaskItems == null)
-          {
-              return NotFound();
-          }
-            var taskItem = await _context.TaskItems.FindAsync(id);
-
-            if (taskItem == null)
+            if (_taskRepository.IsTaskItemContextNull())
             {
                 return NotFound();
             }
+            return await _taskRepository.GetByIdAsync(id);
 
-            return taskItem;
         }
 
         // PUT: api/TaskItem/5
@@ -59,23 +55,7 @@ namespace DataBalkInterview.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(taskItem).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TaskItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _taskRepository.UpdateAsync(taskItem);
 
             return NoContent();
         }
@@ -85,12 +65,11 @@ namespace DataBalkInterview.Controllers
         [HttpPost]
         public async Task<ActionResult<TaskItem>> PostTaskItem(TaskItem taskItem)
         {
-          if (_context.TaskItems == null)
+          if (_taskRepository.IsTaskItemContextNull())
           {
               return Problem("Entity set 'TaskItemContext.TaskItems'  is null.");
           }
-            _context.TaskItems.Add(taskItem);
-            await _context.SaveChangesAsync();
+            await _taskRepository.AddAsync(taskItem);
 
             return CreatedAtAction(nameof(GetTaskItem), new { id = taskItem.Id }, taskItem);
         }
@@ -99,25 +78,22 @@ namespace DataBalkInterview.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTaskItem(int id)
         {
-            if (_context.TaskItems == null)
+            if (_taskRepository.IsTaskItemContextNull())
             {
                 return NotFound();
             }
-            var taskItem = await _context.TaskItems.FindAsync(id);
-            if (taskItem == null)
+            var user = await _taskRepository.GetByIdAsync(id);
+
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.TaskItems.Remove(taskItem);
-            await _context.SaveChangesAsync();
+            await _taskRepository.DeleteAsync(id);
 
             return NoContent();
         }
 
-        private bool TaskItemExists(int id)
-        {
-            return (_context.TaskItems?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+       
     }
 }
