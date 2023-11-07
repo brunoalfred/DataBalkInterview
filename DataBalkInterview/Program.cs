@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataBalkInterview.Models;
+using DataBalkInterview.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<UserContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<TaskItemContext>(options =>

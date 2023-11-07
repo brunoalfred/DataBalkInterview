@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DataBalkInterview.Models;
+using DataBalkInterview.Repositories;
 
 namespace DataBalkInterview.Controllers
 {
@@ -13,40 +14,37 @@ namespace DataBalkInterview.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(UserContext context)
+        public UserController(IUserRepository userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
         }
 
         // GET: api/User
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            return await _context.Users.ToListAsync();
+
+            if (_userRepository.IsUserContextNull())
+            {
+                return NotFound();
+            }
+
+            return await _userRepository.GetAllAsync();
+
         }
 
         // GET: api/User/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
+            if (_userRepository.GetByIdAsync(id) == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return await _userRepository.GetByIdAsync(id);
         }
 
         // PUT: api/User/5
@@ -54,28 +52,14 @@ namespace DataBalkInterview.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
+
             if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            // use the repository to update the user
+            await _userRepository.UpdateAsync(user);
 
             return NoContent();
         }
@@ -85,12 +69,17 @@ namespace DataBalkInterview.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-          if (_context.Users == null)
-          {
-              return Problem("Entity set 'UserContext.Users'  is null.");
-          }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            if (_userRepository.IsUserContextNull())
+            {
+                return Problem("Entity set 'UserContext.Users'  is null.");
+            }
+
+            if (null == user)
+            {
+                return BadRequest();
+            }
+
+            await _userRepository.AddAsync(user);
 
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
@@ -99,25 +88,23 @@ namespace DataBalkInterview.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.Users == null)
+            if (_userRepository.IsUserContextNull())
             {
                 return NotFound();
             }
-            var user = await _context.Users.FindAsync(id);
+
+            var user = await _userRepository.GetByIdAsync(id);
+
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            await _userRepository.DeleteAsync(id);
 
             return NoContent();
         }
 
-        private bool UserExists(int id)
-        {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }
