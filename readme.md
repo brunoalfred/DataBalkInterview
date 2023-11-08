@@ -1,8 +1,9 @@
-# Installation and Environment Setup
+## DataBalk - Task Management API
+
 
 ## Dependencies
 
-WIP
+Used NuGet packages
 
 ## Migrations / Table schema
 
@@ -33,7 +34,7 @@ X-Api-Key: <API_KEY>
 
 ## Documentation 
 
-Using Swagger for API documentation [@ 🔗](https://localhost:7128/swagger/index.html)
+Using Swagger for API  [documentation @ 🔗](https://localhost:7128/swagger/index.html)
 
 ## Tests
 
