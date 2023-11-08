@@ -1,5 +1,7 @@
 ## DataBalk - Task Management API
 
+This is a simple task management API, it allows you to create, update, delete and list tasks.
+
 
 ## Dependencies
 
