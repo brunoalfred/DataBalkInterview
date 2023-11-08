@@ -20,7 +20,7 @@ namespace DataBalkInterview.Controllers
         {
             _taskRepository = taskRepository;
         }
-
+        
         // GET: api/TaskItem
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTaskItems()
@@ -35,7 +35,7 @@ namespace DataBalkInterview.Controllers
 
         // GET: api/TaskItem/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TaskItem>> GetTaskItem(int id)
+        public async Task<ActionResult<TaskItem>> GetTaskItem(Guid id)
         {
             if (_taskRepository.IsTaskItemContextNull())
             {
@@ -48,7 +48,7 @@ namespace DataBalkInterview.Controllers
         // PUT: api/TaskItem/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTaskItem(int id, TaskItem taskItem)
+        public async Task<IActionResult> PutTaskItem(Guid id, TaskItem taskItem)
         {
             if (id != taskItem.Id)
             {
@@ -76,7 +76,7 @@ namespace DataBalkInterview.Controllers
 
         // DELETE: api/TaskItem/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTaskItem(int id)
+        public async Task<IActionResult> DeleteTaskItem(Guid id)
         {
             if (_taskRepository.IsTaskItemContextNull())
             {

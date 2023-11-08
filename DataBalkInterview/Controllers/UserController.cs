@@ -37,7 +37,7 @@ namespace DataBalkInterview.Controllers
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(Guid id)
         {
             if (_userRepository.IsUserContextNull())
             {
@@ -50,7 +50,7 @@ namespace DataBalkInterview.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(Guid id, User user)
         {
 
             if (id != user.Id)
@@ -86,7 +86,7 @@ namespace DataBalkInterview.Controllers
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
             if (_userRepository.IsUserContextNull())
             {

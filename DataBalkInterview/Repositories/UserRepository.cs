@@ -20,7 +20,7 @@ namespace DataBalkInterview.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user != null)
@@ -40,7 +40,7 @@ namespace DataBalkInterview.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
             if (this.IsUserContextNull())
             {
@@ -85,7 +85,7 @@ namespace DataBalkInterview.Repositories
             return _context.Users == null;
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(Guid id)
         {
             return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }

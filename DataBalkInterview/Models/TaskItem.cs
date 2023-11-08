@@ -1,33 +1,40 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace DataBalkInterview.Models
 {
 	public class TaskItem
 	{
+		[Key]
+		public Guid Id { get; set; }
 
-		public int Id { get; set; }
+		[Required]
+		[MaxLength(150)]
 		public string Title { get; set; }
 
+		[MinLength(10)]
 		public string Description { get; set; }
 
-		// relationship with user (assignee)
-		public int UserId { get; set; }
-
-		// due date
+		[Required]
 		public DateTime DueDate { get; set; }
 
+		[Required]
+		public Guid UserId { get; set; } // foreign key
+
+		// public User? User { get; set; } // Navigation property
+
 		public TaskItem(
-			int id,
 			string title,
 			string description,
-			int userId,
-			DateTime dueDate
+			DateTime dueDate,
+			Guid userId
 		)
 		{
-			Id = id;
+			Id = Guid.NewGuid();
 			Title = title;
 			Description = description;
-			UserId = userId;
 			DueDate = dueDate;
+			UserId = userId;
 		}
 
 	}
