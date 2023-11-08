@@ -3,11 +3,11 @@
 This is a simple task management API, it allows you to create, update, delete and list tasks.
 
 
-## Dependencies
+### Dependencies
 
 Used NuGet packages
 
-## Migrations / Table schema
+### Migrations / Table schema
 
 We have users and tasks table
 
@@ -26,7 +26,7 @@ To manage schema we use the following command
  dotnet ef database update --context <ModelNameContext> # to update the database with the new migration
 ```
 
-## Authentication
+### Authentication
 
 Provide XApiKey in the header to authenticate the user
 
@@ -34,11 +34,11 @@ Provide XApiKey in the header to authenticate the user
 X-Api-Key: <API_KEY>
 ```
 
-## Documentation 
+### Documentation 
 
 Using Swagger for API  [documentation @ 🔗](https://localhost:7128/swagger/index.html)
 
-## Tests
+### Tests
 
 I used MSTest for unit testing, to run the tests use the following command
 
