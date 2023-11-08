@@ -2,6 +2,8 @@
 
 This is a simple task management API, it allows you to create, update, delete and list tasks.
 
+<img width="945" alt="Screenshot 2023-11-08 at 12 43 53" src="https://github.com/brunoalfred/DataBalkInterview/assets/55545250/b20310df-f40f-47f9-a1e9-dc1f7408fa2e">
+<img width="889" alt="Screenshot 2023-11-08 at 12 44 29" src="https://github.com/brunoalfred/DataBalkInterview/assets/55545250/b751466e-5ae3-4e6e-998b-8e2c036df54b">
 
 ### Dependencies
 
