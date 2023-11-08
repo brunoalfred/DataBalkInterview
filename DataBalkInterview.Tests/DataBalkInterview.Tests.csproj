@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Integration\" />
+    <None Remove="Unit\" />
+    <None Remove="Integration\Controllers\" />
+    <None Remove="Unit\Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Integration\" />
+    <Folder Include="Unit\" />
+    <Folder Include="Integration\Controllers\" />
+    <Folder Include="Unit\Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataBalkInterview\DataBalkInterview.csproj" />
+  </ItemGroup>
+</Project>
